@@ -6,14 +6,22 @@
       </div>
       <h1 class="title">Pizza Time</h1>
     </div>
-    <div class="right-section">
+    <div v-if="debug" class="right-section">
       <a href="/login" class="login-link">Login </a>or continue as guest
+    </div>
+    <div v-else class="right-section">
+      <span @click="$router.push('/admin')" class="material-symbols-outlined">
+        person
+      </span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import router from '../router';
+
+//temp login state
+const debug: boolean = true;
 
 const goHome = (): void => {
   router.push('/');
@@ -69,6 +77,18 @@ const goHome = (): void => {
       color: #333;
       font-weight: bold;
       font-style: italic;
+    }
+
+    .material-symbols-outlined {
+      font-size: 30px;
+      &:hover {
+        cursor: pointer;
+      }
+      font-variation-settings:
+      'FILL' 1,
+      'wght' 500,
+      'GRAD' 0,
+      'opsz' 24
     }
   }
 }

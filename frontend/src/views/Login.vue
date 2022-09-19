@@ -7,7 +7,10 @@
       <BaseInput name="Pictures of spiderman" @inputVal="debug"/>
       <BaseInput name="Pictures of spiderman feet" type="password" @inputVal="debug($event, 1)"/>
     </div>
-    <button class="btn" @click="callApi">Log In</button>
+    <div class="btn-wrapper">
+      <button class="btn back" @click="$router.push('/')">Back</button>
+      <button class="btn" @click="callApi">Log In</button>
+    </div>
   </div>
 </template>
 
@@ -54,10 +57,22 @@ const callApi = (): void => {
     margin-top: 20px;
   }
 
-  .btn {
-    @include mixins.btn-style(340px);
-    margin-top: 20px;
-    font-size: 16px;
+  .btn-wrapper {
+    width: 340px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+        
+    .btn {
+      @include mixins.btn-style(160px, #7b9728, none, #fff);
+      margin-top: 20px;
+      font-size: 16px;
+  
+    }
+    .back {
+      @include mixins.btn-style(160px, #fff, 1px solid, #7b9728);
+    }
+
   }
 
   p {

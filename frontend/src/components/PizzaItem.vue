@@ -9,7 +9,18 @@
           <h3>{{ name }}</h3>
         </div>
         <div class="pizza-item-description">
-          <p>{{ description }}</p>
+          <div class="icon-wrap">
+            <img src="../assets/fish.png" alt="">
+          </div>
+          <div class="icon-wrap">
+            <img src="../assets/egg.png" alt="">
+          </div>
+          <div class="icon-wrap">
+            <img src="../assets/gluten.png" alt="">
+          </div>
+          <div class="icon-wrap">
+            <img src="../assets/milk.png" alt="">
+          </div>
         </div>
         <div class="pizza-item-price">
           <p>$ {{ price }}</p>
@@ -67,10 +78,18 @@ const price: number = 1000.41;
         }
       }
       .pizza-item-description {
-        p {
-          margin: 0;
-          // margin-top: 10px;
-        }
+        display: flex;
+        .icon-wrap {
+            height: 40px;
+            width: 40px;
+            margin-right: 5px;
+
+            img {
+              height: 100%;
+              // width: 100%;
+            }
+          }
+        
       }
       .pizza-item-price {
         display: flex;
@@ -90,12 +109,14 @@ const price: number = 1000.41;
     .pizza-item {
       .pizza-item-info {
         .pizza-item-description {
-          p {
-            font-size: 14px;
-            max-width: 190px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+          .icon-wrap {
+            height: 40px;
+            width: 40px;
+
+            img {
+              height: 100%;
+              // width: 100%;
+            }
           }
         }
       }

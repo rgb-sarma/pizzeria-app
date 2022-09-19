@@ -31,27 +31,56 @@
       </div>
       <hr>
       <div class="adds-wrap">
-        <div class="toppings-wrap">
+        <div class="toppings-section">
           <h3>Toppings</h3>
-          <div class="single-topping">
-            <label class="custom-label" for="topping1">
-              <div class="label-img-wrap">
-                <img src="../assets/test-img.jpeg" alt="">
-              </div>
-              <div class="topping-info">
-                <div class="topping-name">
-                  Ime
+          <div class="toppings-wrapper">
+            <div class="single-topping" v-for="n in 12">
+              <label class="custom-label" :class="{'selected': checkedToppings.includes(n)}" :for="`topping${n}`">
+                <div class="label-img-wrap">
+                  <img src="../assets/test-img.jpeg" alt="">
                 </div>
-                <div class="topping-price">
-                  + 69$
+                <div class="topping-info">
+                  <div class="topping-name">
+                    Ime toppinga
+                  </div>
+                  <div class="topping-allergen">
+                    <img src="../assets/mustard.png" alt="">
+                  </div>
+                  <div class="topping-price">
+                    +69$
+                  </div>
                 </div>
-              </div>
-            </label>
-            <input type="checkbox" id="topping1" value="Topping 1" v-model="checkedToppings" >
+              </label>
+              <input type="checkbox" :id="`topping${n}`" :value="n" v-model="checkedToppings" >
+            </div>
           </div>
         </div>
-        <div class="sizes-wrap"></div>
-        <div class="btn-wrap"></div>
+        <div class="sizes-section">
+          <h3>Sizes</h3>
+          <div class="sizes-wrapper">
+            <div class="single-size" v-for="n in 4">
+              <label class="custom-label" :class="{'selected': selectedSize === n}" :for="`size${n}`">
+                <div class="size-info">
+                  <div class="size-name">
+                    Ime Velicine
+                  </div>
+                  <div class="size-price">
+                    +69$
+                  </div>
+                </div>
+              </label>
+              <input type="radio" :id="`size${n}`" :value="n" v-model="selectedSize" >
+            </div>
+          </div>
+          <div class="price-wrap">
+            <span>Price:</span>
+            <span>2000$ + 150$(delivery) = 3500$</span>
+          </div>
+          <div class="btn-wrap">
+            <button @click="closePopup" class="btn">Cancel Order</button>
+            <button class="btn fill">Confirm Order</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -60,10 +89,11 @@
 <script setup lang="ts">
   import { ref, Ref } from 'vue';
 
-  let checkedToppings: Ref<Array<string>> = ref([]);
+  let checkedToppings: Ref<Array<number>> = ref([]);
+  let selectedSize: Ref<number> = ref(0);
 
   const emit = defineEmits([
-  'closePopup'
+    'closePopup'
   ]);
 
   const closePopup = (): void => {
@@ -73,6 +103,8 @@
 </script>
 
 <style scoped lang="scss">
+@use '../styles/_mixins.scss';
+
 .pizza-popup-wrapper {
   position: fixed;
   top: 0;
@@ -149,60 +181,160 @@
 
     .adds-wrap {
       display: flex;
-      flex-direction: column;
+      // flex-direction: column;
       justify-content: space-between;
-      height: calc(100% - 200px);
-      .toppings-wrap {
+      // height: 100%;
+      height: calc(100% - 250px);
+      .toppings-section {
+        width: 60%;
+        h3 {
+          width: 100%;
+        }
         display: flex;
         flex-direction: column;
+        
+        .toppings-wrapper {
 
-        .single-topping {
           display: flex;
-          flex-direction: row;
-          align-items: center;
-          margin-bottom: 10px;
-
-          input {
-            display: none;
-          }
-          .custom-label {
+          flex-wrap: wrap;
+          width: 100%;
+          height: 100%;
+          .single-topping {
             display: flex;
+            flex-direction: row;
             align-items: center;
-
-            width: 220px;
-            height: 50px;
-            border-radius: 10px;
-            margin-right: 10px;
-            box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.29);
-            &:hover {
-              cursor: pointer;
+            margin-bottom: 10px;
+  
+            input {
+              display: none;
             }
-
-            .label-img-wrap {
-              height: 50px;
-              margin-right: 10px;
-
-              img {
-                height: 100%;
-                border-radius: 10px 0 0 10px;
-              }
-            }
-            .topping-info {
-              width: 100%;
-              padding-right: 10px;
+            .custom-label {
               display: flex;
-              justify-content: space-between;
+              align-items: center;
+  
+              min-width: 220px;
+              max-width: 250px;
+              height: 50px;
+              border-radius: 10px;
+              margin-right: 10px;
+              box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.29);
+              &:hover {
+                cursor: pointer;
+              }
+  
+              .label-img-wrap {
+                height: 50px;
+                margin-right: 10px;
+  
+                img {
+                  height: 100%;
+                  border-radius: 10px 0 0 10px;
+                }
+              }
+              .topping-info {
+                width: 100%;
+                padding-right: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .topping-allergen {
+                  height: 35px;
+                  width: 35px;
+  
+                  img {
+                    height: 100%;
+                  }
+                }
+
+                .topping-price {
+                  margin-left: 15px;
+                }
+              }
+
+            }
+            .selected {
+              box-shadow: none;
+              border: 1px solid green;
             }
           }
+
         }
       }
-      .sizes-wrap {
+      .sizes-section {
         display: flex;
         flex-direction: column;
-      }
-      .btn-wrap {
-        display: flex;
-        justify-content: center;
+        width: 50%;
+        height: 100%;
+
+        .sizes-wrapper {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          width: 100%;
+          height: 30%;
+          .single-size {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 10px;
+
+            input {
+              display: none;
+            }
+            .custom-label {
+              display: flex;
+              align-items: center;
+
+              min-width: 190px;
+              max-width: 250px;
+              height: 50px;
+              border-radius: 10px;
+              margin-right: 10px;
+              box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.29);
+              &:hover {
+                cursor: pointer;
+              }
+              .size-info {
+                width: 100%;
+                padding: 0 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+              }
+
+            }
+            .selected {
+              box-shadow: none;
+              border: 1px solid green;
+            }
+          }
+
+          }
+
+        .price-wrap {
+          width: 90%;
+          height: 20%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 20px;
+          font-weight: bold;
+        }
+
+        .btn-wrap {
+          margin-top: 20px;
+
+          display: flex;
+          justify-content: space-between;
+
+          .btn {
+            @include mixins.btn-style(160px, #fff, 1px solid, #7b9728);       
+          }
+          .fill {
+            @include mixins.btn-style(160px, #7b9728, none, #fff);       
+          }
+        }
       }
     }
   }

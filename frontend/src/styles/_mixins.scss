@@ -1,0 +1,12 @@
+@mixin btn-style($customWidth) {
+  width: $customWidth;
+  height: 40px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #062931;
+  outline: none;    
+  border: none;
+  background-color: #7b9728;
+  color: #fff;
+  cursor: pointer;
+}

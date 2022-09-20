@@ -78,7 +78,7 @@
           </div>
           <div class="btn-wrap">
             <button @click="closePopup" class="btn">Cancel Order</button>
-            <button class="btn fill">Confirm Order</button>
+            <button @click="confirmOrder" class="btn fill">Confirm Order</button>
           </div>
         </div>
       </div>
@@ -93,11 +93,16 @@
   let selectedSize: Ref<number> = ref(0);
 
   const emit = defineEmits([
-    'closePopup'
+    'closePopup',
+    'confirmOrder',
   ]);
 
   const closePopup = (): void => {
     emit('closePopup');
+  }
+
+  const confirmOrder = (): void => {
+    emit('confirmOrder');
   }
 
 </script>

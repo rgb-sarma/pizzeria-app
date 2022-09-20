@@ -105,8 +105,7 @@ import router from '../router';
   };
 
   const confirmOrder = (): void => {
-    // router.push({ name: 'Order' });
-    console.log('order confirmed');
+    router.push('/confirmOrder');
     
   };
 

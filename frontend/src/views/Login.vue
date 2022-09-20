@@ -4,8 +4,8 @@
       LOGIN
     </h3>
     <div class="inputs-wrapper">
-      <BaseInput name="Pictures of spiderman" @inputVal="debug"/>
-      <BaseInput name="Pictures of spiderman feet" type="password" @inputVal="debug($event, 1)"/>
+      <BaseInput name="Pictures of spiderman" @inputVal="getVal"/>
+      <BaseInput name="Pictures of spiderman feet" type="password" @inputVal="getVal($event, 1)"/>
     </div>
     <div class="btn-wrapper">
       <button class="btn back" @click="$router.push('/')">Back</button>
@@ -21,12 +21,12 @@ import BaseInput from '../components/BaseInput.vue';
 let user: {
   name: String,
   password: String
-} = {
+  } = {
   name: '',
   password: ''
 };
 
-const debug = (payload: String, identifier: number = 0): void => {
+const getVal = (payload: String, identifier: number = 0): void => {
   if (identifier === 0) {
     user.name = payload;
   } else {

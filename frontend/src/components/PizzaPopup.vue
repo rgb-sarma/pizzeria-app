@@ -2,7 +2,7 @@
   <div class="pizza-popup-wrapper" @click="closePopup">
     <div @click.stop class="pizza-content-wrapper">
       <div class="close-wrap">
-        <span class="material-symbols-outlined">
+        <span @click="closePopup" class="material-symbols-outlined">
           close
         </span>
       </div>
@@ -34,7 +34,7 @@
         <div class="toppings-section">
           <h3>Toppings</h3>
           <div class="toppings-wrapper">
-            <div class="single-topping" v-for="n in 12">
+            <div class="single-topping" v-for="n in 10">
               <label class="custom-label" :class="{'selected': checkedToppings.includes(n)}" :for="`topping${n}`">
                 <div class="label-img-wrap">
                   <img src="../assets/test-img.jpeg" alt="">
@@ -74,7 +74,7 @@
           </div>
           <div class="price-wrap">
             <span>Price:</span>
-            <span>2000$ + 150$(delivery) = 3500$</span>
+            <span>2000$ + 1.5$(delivery) = 3500$</span>
           </div>
           <div class="btn-wrap">
             <button @click="closePopup" class="btn">Cancel Order</button>
@@ -199,6 +199,8 @@
           flex-wrap: wrap;
           width: 100%;
           height: 100%;
+          max-height: 300px;
+          overflow-y: auto;
           .single-topping {
             display: flex;
             flex-direction: row;
@@ -333,6 +335,57 @@
           }
           .fill {
             @include mixins.btn-style(160px, #7b9728, none, #fff);       
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .pizza-popup-wrapper {
+    .pizza-content-wrapper {
+      width: 90%;
+      height: 90%;
+      .header-wrap {
+        height: 200px;
+        .img-wrap {
+          height: 200px;
+          width: 200px;
+          margin-right: 10px;
+        }
+        .title-text-wrap {
+          p {
+            max-width: 100%;
+          }
+        }
+      }
+      .adds-wrap {
+        height: calc(100% - 250px);
+        .toppings-section {
+          width: 70%;
+          .toppings-wrapper {
+            .single-topping {
+              .custom-label {
+                min-width: 100%;
+                max-width: 100%;
+              }
+            }
+          }
+        }
+        .sizes-section {
+          width: 100%;
+          .sizes-wrapper {
+            gap: 10px;
+            .single-size {
+              .custom-label {
+                min-width: 100%;
+                max-width: 100%;
+              }
+            }
+          }
+          .price-wrap {
+            width: 100%;
           }
         }
       }

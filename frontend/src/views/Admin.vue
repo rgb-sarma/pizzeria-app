@@ -1,23 +1,40 @@
 <template>
   <div class="admin-wrapper">
-    <Categories />
+    <Categories @setCategory="setCategory"/>
     <div class="divider"></div>
     <div class="preview-item">
-      <div v-if="!isViewing" class="no-item">
-        Select an item to preview
+      <div v-if="preview === 'order'" class="item-wrapper">
+        <AdminList contentType="order" isOrder/>
       </div>
-      <div v-else class="item-wrapper">
-        <PizzaPreview />
+      <div v-if="preview === 'pizza'" class="item-wrapper">
+        <AdminList v-if="!pizzaSelected" contentType="pizza"/>
+        <ItemPreview v-else/>
+      </div>
+      <div v-if="preview === 'topping'" class="item-wrapper">
+        <AdminList v-if="!toppingSelected" contentType="topping"/>
+        <ItemPreview v-else/>
+      </div>
+      <div v-if="!preview" class="no-item">
+        Select an item to preview
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Ref, ref } from "vue";
 import Categories from "../components/Categories.vue";
-import PizzaPreview from "../components/PizzaPreview.vue";
+import ItemPreview from "../components/ItemPreview.vue";
+import AdminList from "../components/AdminList.vue";
 
-const isViewing: boolean = true;
+  let preview: Ref<string> = ref('');
+  let pizzaSelected: Ref<boolean> = ref(false);
+  let toppingSelected: Ref<boolean> = ref(false);
+
+  const setCategory = (payload: string): void => {
+    preview.value = payload;
+    
+  }
 
 </script>
 

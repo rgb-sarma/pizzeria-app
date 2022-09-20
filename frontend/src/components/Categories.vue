@@ -32,9 +32,13 @@
 
 <script setup lang="ts">
 
-const setCategory = (category: String): void => {
-  console.log(category);
-}
+  const emit = defineEmits([
+    'setCategory',
+  ]); 
+
+  const setCategory = (category: String): void => {
+    emit('setCategory', category);
+  }
 
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="list-wrapper">
-    <div v-if="!props.isOrder" class="create-item">
+    <div v-if="!props.isOrder" @click="editItem" class="create-item">
       + Create new {{ props.contentType }}
     </div>
     <div class="item-list">
@@ -78,18 +78,18 @@ import { Ref, ref } from 'vue';
     if (props.isOrder) {
       alert('Accepted');
     } else {
-      alert('Edit');
+      // alert('Edit');
+      emit('editItem');
     }
-    // emit('editItem');
   }
 
   const deleteItem = (): void => {
     if (props.isOrder) {
       alert('Rejected');
     } else {
-      alert('Delete');
+      // alert('Delete');
+      emit('deleteItem');
     }
-    // emit('deleteItem');
   }
 
 </script>
@@ -205,4 +205,41 @@ import { Ref, ref } from 'vue';
     }
   }
 }
+
+@media (max-width: 768px) {
+  .list-wrapper {
+    .create-item {
+      width: 80%;
+    }
+    .item-list {
+      width: 80%;
+      max-height: 400px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .list-wrapper {
+    .create-item {
+      width: 90%;
+      font-size: 1.2em;
+    }
+    .item-list {
+      width: 90%;
+      .single-item {
+        .item-info {
+          .item-name {
+            font-size: 1.2em;
+          }
+        }
+
+        .order-details {
+          padding-bottom: 10px;
+          flex-direction: column;
+        }
+      }
+    }
+  }
+}
+
 </style>

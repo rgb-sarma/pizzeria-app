@@ -4,7 +4,7 @@
       <div class="img-wrap">
         <img src="../assets/bill.png" alt="">
       </div>
-      <span>Orders</span>
+      <span v-if="!isMobile">Orders</span>
       <span class="material-symbols-outlined">
         chevron_right
       </span>
@@ -13,7 +13,7 @@
       <div class="img-wrap">
         <img src="../assets/pizza.png" alt="">
       </div>
-      <span>Pizzas</span>
+      <span v-if="!isMobile">Pizzas</span>
       <span class="material-symbols-outlined">
         chevron_right
       </span>
@@ -22,7 +22,7 @@
       <div class="img-wrap">
         <img src="../assets/pizzaslice.png" alt="">
       </div>
-      <span>Toppings</span>
+      <span v-if="!isMobile">Toppings</span>
       <span class="material-symbols-outlined">
         chevron_right
       </span>
@@ -31,6 +31,9 @@
 </template>
 
 <script setup lang="ts">
+import { Ref, ref } from "vue";
+
+  let isMobile: Ref<boolean> = ref(window.innerWidth <= 500);
 
   const emit = defineEmits([
     'setCategory',
@@ -80,4 +83,5 @@
     }
   }
 }
+
 </style>

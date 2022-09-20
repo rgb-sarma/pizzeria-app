@@ -4,6 +4,7 @@
       <div class="img-wrap">
         <img src="../assets/test-img.jpeg" alt="">
       </div>
+      <input type="file" @change="addImg($event)" accept="image/png, image/jpeg" >
       <div class="info-fields">
         <div class="inputs">
           <div class="single-input">
@@ -15,19 +16,19 @@
             <BaseInput name="pizza price" type="number"/>
           </div>
         </div>
-        <div class="desc-area">
+        <div v-if="!props.isTopping" class="desc-area">
           <span class="description">Description:</span>
           <textarea placeholder="Enter description" maxlength="255" spellcheck="false"></textarea>
         </div>        
       </div>
     </div>
-    <div class="toppings-wrapper">
+    <div v-if="!props.isTopping" class="toppings-wrapper">
       <div class="title">
         <h3>Available toppings</h3>
       </div>
       <div class="checkboxes">
-        <div v-for="n in 20" class="single-checkbox">
-          <input type="checkbox" :id="n.toString()+`top`">
+        <div v-for="n in 12" class="single-checkbox">
+          <input type="checkbox" :id="n.toString()+`top`" v-model="toppings">
           <label :for="n.toString()+`top`">{{ n }} topping</label>
         </div>
       </div>
@@ -39,19 +40,19 @@
         </div>
         <div class="checkboxes">
           <div v-for="n in 7" class="single-checkbox">
-            <input type="checkbox" :id="n.toString()+`alg`">
+            <input type="checkbox" :id="n.toString()+`alg`" v-model="allergens">
             <label :for="n.toString()+`alg`">{{ n }} allegen</label>
           </div>
         </div>
       </div>
       <div class="divider"></div>
-      <div class="sizes">
+      <div v-if="!props.isTopping" class="sizes">
         <div class="title">
           <h3>Available sizes</h3>
         </div>
         <div class="checkboxes">
-        <div v-for="n in 3" class="single-checkbox">
-          <input type="checkbox" :id="n.toString()+`size`">
+        <div v-for="n in 4" class="single-checkbox">
+          <input type="checkbox" :id="n.toString()+`size`" v-model="sizes">
           <label :for="n.toString()+`size`">{{ n }} size:</label>
           <BaseInput :name="`price for `+n.toString()+` size`"/>
         </div>
@@ -59,16 +60,44 @@
       </div>
     </div>
     <div class="btn-wrapper">
+      <button @click="back" class="btn outline">Back</button>
       <button @click="callApi" class="btn">Save Changes</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Ref, ref } from 'vue';
 import BaseInput from './BaseInput.vue';
+
+let img: Ref<any> = ref(null);
+let toppings: Ref<string[]> = ref([]);
+let allergens: Ref<string[]> = ref([]);
+let sizes: Ref<string[]> = ref([]);
+
+const emit = defineEmits([
+  'backToList',
+]);
+
+
+const props = defineProps({
+  isTopping: {
+    type: Boolean,
+    required: false,
+  },
+});
 
 const callApi = (): void => {
   console.log('callApi');
+}
+
+const back = (): void => {
+  emit('backToList');
+}
+
+const addImg = (event: any): void => {
+  img = event.target.files[0];
+  console.log(img);
 }
 
 </script>
@@ -215,6 +244,62 @@ const callApi = (): void => {
     margin-top: 20px;
     .btn {
       @include mixins.btn-style(160px, #7b9728, none, #fff);
+    }
+
+    .outline {
+      @include mixins.btn-style(160px, #fff, 1px solid, #7b9728);
+      margin-right: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .pizza-preview-wrapper {
+    .heading {
+      flex-direction: column;
+      height: auto;
+
+      .img-wrap {
+        margin-bottom: 20px;
+      }
+
+      .info-fields {
+        .inputs {
+          .single-input {
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 10px;
+
+            .label {
+              margin-right: 0;
+              margin-bottom: 5px;
+            }
+          }
+        }
+
+        .desc-area {
+          textarea {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .options-wrapper {
+      flex-direction: column;
+
+      .allergens {
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .divider {
+        display: none;
+      }
+
+      .sizes {
+        max-width: 100%;
+      }
     }
   }
 }

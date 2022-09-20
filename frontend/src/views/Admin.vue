@@ -1,18 +1,18 @@
 <template>
   <div class="admin-wrapper">
-    <Categories @setCategory="setCategory"/>
+    <Categories v-if="calcShowCategories()" @setCategory="setCategory"/>
     <div class="divider"></div>
     <div class="preview-item">
       <div v-if="preview === 'order'" class="item-wrapper">
         <AdminList contentType="order" isOrder/>
       </div>
       <div v-if="preview === 'pizza'" class="item-wrapper">
-        <AdminList v-if="!pizzaSelected" contentType="pizza"/>
-        <ItemPreview v-else/>
+        <AdminList v-if="!pizzaSelected" contentType="pizza" @editItem="setPizza"/>
+        <ItemPreview @backToList="unsetPizza" v-else/>
       </div>
       <div v-if="preview === 'topping'" class="item-wrapper">
-        <AdminList v-if="!toppingSelected" contentType="topping"/>
-        <ItemPreview v-else/>
+        <AdminList v-if="!toppingSelected" contentType="topping" @editItem="setTopping"/>
+        <ItemPreview @backToList="unsetTopping" isTopping v-else/>
       </div>
       <div v-if="!preview" class="no-item">
         Select an item to preview
@@ -28,12 +28,43 @@ import ItemPreview from "../components/ItemPreview.vue";
 import AdminList from "../components/AdminList.vue";
 
   let preview: Ref<string> = ref('');
+  // bice string umesto boolean
   let pizzaSelected: Ref<boolean> = ref(false);
   let toppingSelected: Ref<boolean> = ref(false);
 
   const setCategory = (payload: string): void => {
     preview.value = payload;
     
+  }
+
+  let isMobile: Ref<boolean> = ref(window.innerWidth <= 768);
+
+  const setPizza = (payload: boolean): void => {
+    // pizzaSelected.value = payload;
+    pizzaSelected.value = true;
+  }
+
+  const unsetPizza = (payload: boolean): void => {
+    // pizzaSelected.value = payload;
+    pizzaSelected.value = false;
+  }
+
+  const setTopping = (payload: boolean): void => {
+    // toppingSelected.value = payload;
+    toppingSelected.value = true;
+  }
+
+  const unsetTopping = (payload: boolean): void => {
+    // toppingSelected.value = payload;
+    toppingSelected.value = false;
+  }
+
+  const calcShowCategories = (): boolean => {
+    if (isMobile.value) {
+      return !pizzaSelected.value && !toppingSelected.value;
+    } else {
+      return true
+    }
   }
 
 </script>

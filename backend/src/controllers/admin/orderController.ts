@@ -10,7 +10,9 @@ export const getAllOrders = async (req: Request, res: Response): Promise<void> =
 
 export const updateOrder = async (req: Request, res: Response, next: Function): Promise<void> => {
   const db = await run();
-  const order = await db.collection('order').findOne({_id: new ObjectId((req.params.id))});
+  const order = await db.collection('order').updateOne({_id: new ObjectId((req.params.id))}, {$set: {
+    status: req.body.status
+  }});
 
   if (!order) {
     res.status(404);
@@ -22,7 +24,21 @@ export const updateOrder = async (req: Request, res: Response, next: Function): 
 
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
   const db = await run();
-  const order = await db.collection('order').insertOne(req.body);
+  let size = new ObjectId(req.body.pizza.size);
+  let toppings = req.body.pizza.toppings.map((el:any) => new ObjectId(el))
+  const order = await db.collection('order').insertOne({
+    name: req.body.name,
+    lastname: req.body.lastname,
+    address: req.body.address,
+    phone: req.body.phone,
+    status: req.body.status,
+    pizza: {
+      name: req.body.pizza.name,
+      size: size,
+      toppings: toppings,
+      totalPrice: req.body.pizza.totalPrice
+    }
+  });
   res.json(order);
 }
 

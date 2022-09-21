@@ -4,13 +4,20 @@ import { ObjectId } from 'mongodb';
 
 export const getAllToppings = async (req: Request, res: Response): Promise<void> => {
   const db = await run();
-  const toppings = await db.collection('toppings').find({}).toArray();
+  const toppings = await db.collection('topping').find({}).toArray();
   res.json(toppings);
 }
 
 export const updateTopping = async (req: Request, res: Response, next: Function): Promise<void> => {
   const db = await run();
-  const topping = await db.collection('toppings').findOne({_id: new ObjectId((req.params.id))});
+  let alergen = req.body.alergen ? req.body.alergen.map((el:any) => new ObjectId(el)) : null;
+  let image = new ObjectId(req.body.image);
+  const topping = await db.collection('topping').updateOne({_id: new ObjectId((req.params.id))}, {$set: {
+    name: req.body.name,
+    price: req.body.price,
+    alergen: alergen,
+    image: image,
+  }});
 
   if (!topping) {
     res.status(404);
@@ -22,12 +29,19 @@ export const updateTopping = async (req: Request, res: Response, next: Function)
 
 export const createTopping = async (req: Request, res: Response): Promise<void> => {
   const db = await run();
-  const topping = await db.collection('toppings').insertOne(req.body);
+  let alergen = req.body.alergen ? new ObjectId(req.body.alergen) : null;
+  let image = new ObjectId(req.body.image);
+  const topping = await db.collection('topping').insertOne({
+    name: req.body.name,
+    price: req.body.price,
+    alergen: alergen,
+    image: image,
+  });
   res.json(topping);
 }
 
 export const deleteTopping = async (req: Request, res: Response): Promise<void> => {
   const db = await run();
-  const topping = await db.collection('toppings').deleteOne({_id: new ObjectId((req.params.id))});
+  const topping = await db.collection('topping').deleteOne({_id: new ObjectId((req.params.id))});
   res.json(topping);
 }

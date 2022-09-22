@@ -26,11 +26,10 @@ export async function getImageById( req: Request, res: Response, next: Function 
     if (!data) {
       res.status(404)
       throw new Error('Image not found.')
+    } else {
+      res.sendFile(__dirname + data.imagePath)
     }
-    const img = Buffer.from(data.image.buffer, 'base64')
-
-    res.send(img)
-    // res.send(Buffer.from(data.image.buffer))
+    // res.json(data)
   } catch (e) {
     next(e)
     return
@@ -38,12 +37,24 @@ export async function getImageById( req: Request, res: Response, next: Function 
 }
 
 export async function postImage(req: Request, res: Response, next: Function) {
-  if (!req.file) {
+  // console.log(req.files);
+  
+  // console.log(req.files);
+  
+
+  // res.sendStatus(200)
+  
+  if (!req.files) {
     throw new Error('Invalid image.')
   }
   try {
+    // console.log(req.file);
+    // res.json(req.file)
+    const file: any = req.files.file
+
+    file.mv(__dirname + '/upload/' + file.name);
     const db = await run()
-    let data = await db.collection('images').insertOne({ image: req.file })
+    let data = await db.collection('images').insertOne({ imagePath: '/upload/' + file.name })
     res.json(data.insertedId)
   } catch (e) {
     next(e)
@@ -54,14 +65,17 @@ export async function postImage(req: Request, res: Response, next: Function) {
 
 
 export async function updateImage(req: Request, res: Response, next: Function) {
-  if (!req.file) {
+  if (!req.files) {
     throw new Error('Invalid image.')
   }
   try {
+    const file: any = req.files.file
+    file.mv(__dirname + '/upload/' + file.name);
     const db = await run()
+    await db.collection('images').insertOne({ imagePath: '/upload/' + file.name })
     const data = await db
       .collection('images')
-      .updateOne({ _id: new ObjectId(req.params.id) }, { $set: { image: req.file } })
+      .updateOne({ _id: new ObjectId(req.params.id) }, { $set: { imagePath: '/upload/' + file.name } })
     // res.json(data)
     res.json('ok')
   } catch (e) {

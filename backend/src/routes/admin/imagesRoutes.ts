@@ -12,7 +12,8 @@ const router: Router = express.Router()
 
 router.use('/:id', verifyId)
 // router.route('/:id').get()
-router.route('/').post(upload.single('file'), postImage).get(getAllImageIds)
-router.route('/:id').get(getImageById).put(upload.single('file'), updateImage)
+router.route('/').post(postImage).get(getAllImageIds)
+// router.route('/').post(upload.single('file'), postImage).get(getAllImageIds)
+router.route('/:id').get(getImageById).put(updateImage)
 
 export default router
